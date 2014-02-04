@@ -1,5 +1,5 @@
 module GenomicRegion
 
-# package code goes here
+    include ("tabix.jl")
 
-end # module
+end 
