@@ -77,35 +77,25 @@ end
 # Generic Region I/O
 ####################
 
-type RegionStream{T <: Region} <: IO
+type RegionStream{T <: Region}
     handle :: IO
 end
 
-function Base.write{T}(rio :: RegionStream{T},  r :: Region)
+function write{T}(rio :: RegionStream{T},  r :: Region)
     write(rio.handle, convert(T, r))
-end
-
-function Base.read{T <: Region}(rio :: RegionStream{T}, ::Type{T})
-    read(rio.handle, T)
-end
-
-function Base.eof(rio :: RegionStream)
-    eof(rio.handle)
 end
 
 function advance{T}(it :: RegionStream{T}) 
     try 
-        read (it.handle, T)
+        read(it.handle, T)
     catch EOFError
         nothing
     end
 end
 
-# FIXME: collect(it) returns Array{Any} instead of Array{T}
-
 Base.start{T}(it :: RegionStream{T}) = advance(it)
 Base.next{T}(it :: RegionStream{T}, nxt) = (nxt, advance (it))
-Base.done (it :: RegionStream, nxt) = ( nxt == nothing ) || eof (it)
+Base.done (it :: RegionStream, nxt) = ( nxt == nothing ) || eof (it.handle)
 
 #########################################
 # Mapping file extensions to Region types
@@ -143,9 +133,9 @@ function grload(path :: String)
 end
 
 function grsave(path :: String, regions)
-    io = gropen(path, "w")
+    h = gropen(path, "w")
     for r in regions
-        write(io, r)
+        write(h.handle, r)
     end
-    close(io)
+    close(h.handle)
 end

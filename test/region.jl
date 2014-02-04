@@ -1,11 +1,12 @@
 using GenomicRegion
 
-h = gropen("/home/gilesc/Data/transcripts/hg19/eg.bed.gz")
-rs = collect (h)
+path = "/home/gilesc/Data/transcripts/hg19/eg.bed.gz"
+println (grload (path))
 
-#for item in h
-#    println (item)
-#end
+path = "/home/gilesc/Data/RNAseq/bg/DRR001622.bg.gz"
+for item in gropen (path)
+    println (item)
+end
 
 #function write_regions_by_name(outdir :: String, regions)
 #    mkdir_p(outdir)

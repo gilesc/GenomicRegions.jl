@@ -13,7 +13,7 @@ end
 register_file_extension!(BED, ".bed")
 register_file_extension!(BED, ".bed.gz")
 
-function read(io :: IO, ::Type{BED})
+function Base.read(io :: IO, ::Type{BED})
     while !eof(io)
         try
             return convert(BED, readline(io))
