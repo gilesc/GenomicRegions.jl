@@ -1,4 +1,4 @@
-# GenomicRegion
+# GenomicRegions
 
 A Julia package for handling sets of genomic regions, with in-memory and
 on-disk indexing capabilities.
